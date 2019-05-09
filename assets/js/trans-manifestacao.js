@@ -42,6 +42,7 @@ var app = angular.module("app", ["chart.js"]).controller("tramManifestacao", fun
           $scope.telefone         = response.data.ttRetorno[0].telefone;
           $scope.tipotpitem       = response.data.ttRetorno[0].tipotpitem;
 
+          $scope.buscaitemmanifestacao();
           $scope.buscaanexomanifestacao();
           $scope.buscahistoricomanifestacao();
           $('#carregandoModal').modal('hide');
@@ -49,7 +50,29 @@ var app = angular.module("app", ["chart.js"]).controller("tramManifestacao", fun
         }, function myError(response) {
                 ERRO = response.statusText;
                 console.log(ERRO);
-        });  
+        });
+        $('#carregandoModal').modal('hide');  
+    }
+      
+    $scope.buscaitemmanifestacao = function () {
+      $('#carregandoModal').modal('hide');
+      $http({
+        method : "GET",
+        url : "action/data/manifestacao",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        params: {requested: 'itemmanifestacao', id: $scope.idmanifestacao}
+        }).then(function mySucces(response) {
+  
+          $scope.itensmanifestacao = response.data.ttRetorno 
+          $('#carregandoModal').modal('hide');         
+        }, function myError(response) {
+                ERRO = response.statusText;
+                console.log(ERRO);
+        });
+        $('#carregandoModal').modal('hide');
+  
     }
     
     $scope.buscaanexomanifestacao = function () {
@@ -68,7 +91,8 @@ var app = angular.module("app", ["chart.js"]).controller("tramManifestacao", fun
         }, function myError(response) {
                 ERRO = response.statusText;
                 console.log(ERRO);
-        });  
+        });
+        $('#carregandoModal').modal('hide');  
     }
   
     $scope.buscahistoricomanifestacao = function () {
@@ -88,6 +112,7 @@ var app = angular.module("app", ["chart.js"]).controller("tramManifestacao", fun
                 ERRO = response.statusText;
                 console.log(ERRO);
         });
+        $('#carregandoModal').modal('hide');
     }
     
     $scope.idmanifestacao     = location.search.substr(1,(location.search.indexOf("&")-1))

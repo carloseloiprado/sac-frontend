@@ -35,6 +35,19 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
         $scope.resposta         = response.data.ttRetorno[0].resposta;
         $scope.telefone         = response.data.ttRetorno[0].telefone;
         $scope.tipotpitem       = response.data.ttRetorno[0].tipotpitem;
+
+        if ( $scope.tipotpitem.indexOf("Reclamação") == -1 ) {
+          $("#btnAssume").hide();
+          $("#btnAssumeHist").hide();
+          $("#lnkAssume").hide();
+          $("#btnTramitaHist").hide();
+          $("#btnTramita").hide();          
+          $("#lnkTramita").hide();
+          $("#lnkTransferir").hide();
+          $("#btnTrans").hide();
+          $("#btnTransHist").hide();
+        }
+
         $('#carregandoModal').modal('hide');
         $scope.buscaitemmanifestacao();
         $scope.buscaanexomanifestacao();
@@ -43,6 +56,7 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
               ERRO = response.statusText;
               console.log(ERRO);
       });
+      $('#carregandoModal').modal('hide');
 
   }
 
@@ -63,6 +77,7 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
               ERRO = response.statusText;
               console.log(ERRO);
       });
+      $('#carregandoModal').modal('hide');
 
   }
 
@@ -83,6 +98,7 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
               ERRO = response.statusText;
               console.log(ERRO);
       });
+      $('#carregandoModal').modal('hide');
 
   }
 
@@ -105,6 +121,7 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
               ERRO = response.statusText;
               console.log(ERRO);
       });
+      $('#carregandoModal').modal('hide');
   }
 
   $scope.idmanifestacao     = location.search.substr(1,(location.search.indexOf("&")-1))
@@ -168,7 +185,7 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
 
             $("#processaManifestacaoModal").modal('hide');
             $scope.mensagemmodal  =  "Manifesta\xE7\xE3o assumida com sucesso!";
-            $scope.corpomensagemmodal  =  "Manifesta\xE7\xE3o " + $scope.idmanifestacao + " assumida com sucesso!";
+            $scope.corpomensagemmodal  =  "Manifesta\xE7\xE3o " + $scope.protocolo + " assumida com sucesso!";
             $("#sucessoAssumeManifestacaoModal").modal('show');  
 
           }, function myError(response) {

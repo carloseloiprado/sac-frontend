@@ -118,14 +118,37 @@
   
             $scope.buscaanexomanifestacao();
             $scope.buscahistoricomanifestacao();
+            $scope.buscaitemmanifestacao();
             $('#carregandoModal').modal('hide');
     
           }, function myError(response) {
                   ERRO = response.statusText;
                   console.log(ERRO);
-          });  
+          }); 
+          $('#carregandoModal').modal('hide'); 
       }
       
+      $scope.buscaitemmanifestacao = function () {
+        $('#carregandoModal').modal('hide');
+        $http({
+          method : "GET",
+          url : "action/data/manifestacao",
+          headers: {
+              'Content-type': 'application/json'
+          },
+          params: {requested: 'itemmanifestacao', id: $scope.idmanifestacao}
+          }).then(function mySucces(response) {
+    
+            $scope.itensmanifestacao = response.data.ttRetorno 
+            $('#carregandoModal').modal('hide');         
+          }, function myError(response) {
+                  ERRO = response.statusText;
+                  console.log(ERRO);
+          });
+          $('#carregandoModal').modal('hide');
+    
+      }
+
       $scope.buscaanexomanifestacao = function () {
         $('#carregandoModal').modal('hide');
         $http({
@@ -143,7 +166,7 @@
                   ERRO = response.statusText;
                   console.log(ERRO);
           });
-    
+          $('#carregandoModal').modal('hide');
       }
     
       $scope.buscahistoricomanifestacao = function () {
@@ -163,6 +186,7 @@
                   ERRO = response.statusText;
                   console.log(ERRO);
           });
+          $('#carregandoModal').modal('hide');
       }
     
       $scope.idmanifestacao     = location.search.substr(1,(location.search.indexOf("&")-1))
