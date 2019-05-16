@@ -50,7 +50,7 @@
     var request = new XMLHttpRequest();
     request.open("POST", 'action/upload?action=clear');
     request.send();
-    sleep(500);
+    sleep(3000);
     fileList.forEach(function (file) {
       sendFile(file);
     });
@@ -371,14 +371,14 @@ var app = angular.module("app", ["chart.js"]).controller("NovaManifestacao", fun
      
     if ( $("#protocolo").val() == "" || $("#protocolo").val() == null ) return;
     if ( $("#origem").val() == "" || $("#origem").val() == null ) return;
-    if ( $("#telefone").val() == "" || $("#telefone").val() == null  ) return;
+    //if ( $("#telefone").val() == "" || $("#telefone").val() == null  ) return;
     if ( $("#cliente").val() == "" || $("#cliente").val() == null  ) return;
-    if ( $("#cep").val() == "" || $("#cep").val() == null  ) return;
+    /*if ( $("#cep").val() == "" || $("#cep").val() == null  ) return;
     if ( $("#rua").val() == "" || $("#rua").val() == null  ) return;
     if ( $("#nrlogradouro").val() == "" || $("#nrlogradouro").val() == null  ) return;
     if ( $("#bairro").val() == "" || $("#bairro").val() == null  ) return;
     if ( $("#cidade").val() == "" || $("#cidade").val() == null  ) return;
-    if ( $("#uf").val() == "" || $("#uf").val() == null  ) return;
+    if ( $("#uf").val() == "" || $("#uf").val() == null  ) return;*/
     if ( $("#tipo").val() == "" || $("#tipo").val() == null  ) return;
     if ( $("#tpitem").val() == "" || $("#tpitem").val() == null  ) return;      
     if ( $("#ocorrencia").val() == "" || $("#ocorrencia").val() == null  ) return;
@@ -397,9 +397,8 @@ var app = angular.module("app", ["chart.js"]).controller("NovaManifestacao", fun
       return;        
     }
     //$('#btnGravar').click();
-    $("#btnGravar").trigger('click');
-    
     $('#prefinalizamanifestacaoModal').modal('show');
+    $("#btnGravar").trigger('click'); 
   };
 
   $scope.finalizamanifestacao = function() {
@@ -422,7 +421,7 @@ var app = angular.module("app", ["chart.js"]).controller("NovaManifestacao", fun
 
     $("#prefinalizamanifestacaoModal").modal('hide');
     $scope.mensagemmodal  = "Aguarde mais um pouco, finalizando sua Manifesta\xE7\xE3o";
-    $('#gravandoModal').modal('hide');
+    $('#gravandoModal').modal('show');
     $http({
           method : "POST",
           url : "action/data/manifestacao-form",

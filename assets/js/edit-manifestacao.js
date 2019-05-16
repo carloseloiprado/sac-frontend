@@ -50,7 +50,7 @@
     var request = new XMLHttpRequest();
     request.open("POST", 'action/upload?action=clear');
     request.send();
-    sleep(500);
+    sleep(3000);
     fileList.forEach(function (file) {
       sendFile(file);
     });
@@ -326,9 +326,8 @@ var app = angular.module("app", ["chart.js"]).controller("EditaManifestacao", fu
       return;        
     }
     //$('#btnGravar').click();
-    $("#btnGravar").trigger('click');
-    
     $('#prefinalizamanifestacaoModal').modal('show');
+    $("#btnGravar").trigger('click');    
   };
 
   $scope.finalizamanifestacao = function() {
@@ -350,7 +349,7 @@ var app = angular.module("app", ["chart.js"]).controller("EditaManifestacao", fu
 
     $("#prefinalizamanifestacaoModal").modal('hide');
     $scope.mensagemmodal  = "Aguarde mais um pouco, finalizando edi\xE7\xE3o da Manifesta\xE7\xE3o";
-    //$('#gravandoModal').modal('show');
+    $('#gravandoModal').modal('show');
     $http({
           method : "POST",
           url : "action/data/manifestacao-form",

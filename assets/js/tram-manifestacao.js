@@ -51,7 +51,7 @@
     var request = new XMLHttpRequest();
     request.open("POST", 'action/upload?action=clear');
     request.send();
-    sleep(500);
+    sleep(3000);
     fileList.forEach(function (file) {
       sendFile(file);
     });
@@ -210,9 +210,8 @@
           $scope.errotramitaparecer = true;
           return;
         }
-  
-        $("#btnGravar").trigger('click');
         $('#pretramitamanifestacaoModal').modal('show');
+        $("#btnGravar").trigger('click');        
       };
   
       $scope.presolucionamanifestacao = function() {
@@ -230,17 +229,17 @@
           $scope.errotramitaparecer = true;
           return;
         } 
-  
-        $("#btnGravar").trigger('click');
         $('#presolucionamanifestacaoModal').modal('show');
+        $("#btnGravar").trigger('click');        
       };
   
       $scope.tramitarmanifestacao = function() {
   
         $("#pretramitamanifestacaoModal").modal('hide');
+        $('#presolucionamanifestacaoModal').modal('hide');
         $scope.mensagemmodal  =  "Processando...";
         $scope.corpomensagemmodal  =  "Aguarde fim do processamento...."
-        //$("#tramitandoManifestacaoModal").modal('show');
+        $("#tramitandoManifestacaoModal").modal('show');
         
         $http({
               method : "POST",
@@ -267,6 +266,7 @@
                     
                   }
                   else {
+                    $("#tramitandoManifestacaoModal").modal('hide');
                     $('#errotramitamanifestacaoModal').modal('show');
                     $scope.mensagemmodal  = "Erro ao Tr\xE2mitar a Manifesta\xE7\xE3o";
                     console.log(response.data);
@@ -277,8 +277,7 @@
                       ERRO = response.statusText;
                       console.log(ERRO);
                 });
-                $("#pretramitamanifestacaoModal").modal('hide');
-                
+                $("#tramitandoManifestacaoModal").modal('hide');                
       };
   
       $scope.solucionamanifestacao = function() {
