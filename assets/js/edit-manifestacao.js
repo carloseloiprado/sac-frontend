@@ -1,17 +1,22 @@
 (function () {
-  var fileCatcher           = document.getElementById('btnGravar');
+  //var fileCatcher           = document.getElementById('btnGravar');
   var fileInput             = document.getElementById('file');
   var fileListDisplayRight  = document.getElementById('file-list-display-right');
   var fileListDisplayLeft   = document.getElementById('file-list-display-left');
   
   var fileList = [];
+  var fileListAux = [];
   var renderFileList, sendFile, clearFiles;
   
-  fileCatcher.addEventListener('click', function (evnt) {
+  /*fileCatcher.addEventListener('click', function (evnt) {
     evnt.preventDefault();
     clearFiles();
-  });
+  });*/
   
+  document.addEventListener("DOMContentLoaded", function(event) {
+    clearFiles();
+  });
+
   fileInput.addEventListener('change', function (evnt) {
     //fileList = [];
     for (var i = 0; i < fileInput.files.length; i++) {
@@ -25,8 +30,15 @@
   renderDelFileList = function (x) {
 
     //delete fileList[x];
-    fileList.splice(x, 1)
-
+    clearOneFiles(x);
+    //fileList.splice(x, 1);
+    //fileListAux.splice(x, 1)     
+    fileListAux[x] = '<div class="progress" style="width:60%">'
+                    + ' <div id="prgBar' + x + '" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; color:#858796">'  
+                    + 'anexo exclu&iacute;do...&nbsp;' 
+                    + ' </div></div><BR>'
+                    + '<div class="dropdown-divider"></div>'
+                    ;
     renderFileList();
   };
 
@@ -36,7 +48,18 @@
 
     fileList.forEach(function (file, index) {
       var fileDisplayEl = document.createElement('p');
-      fileDisplayEl.innerHTML = '<a href="#" onclick="renderDelFileList(' + index + ')"  class="btn btn-icon-split"><span class="fas fa-trash" title="Excluir anexo!"></span></a>' + '  ' + file.name.substring(0,6) + "..." + file.type + '<div class="dropdown-divider"></div>';
+
+      if ( fileListAux[index] != '' && fileListAux[index] != undefined)
+        fileDisplayEl.innerHTML = fileListAux[index];
+      else
+        fileDisplayEl.innerHTML = '<div class="progress" style="width:60%">'
+                              + ' <div id="prgBar' + index + '" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%; color:#858796">' 
+                              + file.name.substring(0,6) + "..." + file.type + '&nbsp;' 
+                              + ' </div></div>'
+                              + '<a href="#" onclick="renderDelFileList(' + index + ')"  class="btn btn-icon-split"><span class="fas fa-trash" title="Excluir anexo!"></span></a>&nbsp; | &nbsp;'
+                              + '<a href="#" onclick="sendOneFile(' + index + ')"  class="btn btn-icon-split"><span class="fas fa-save" title="Salvar anexo!"></span></a>'
+                              + '<div class="dropdown-divider"></div>'
+                              ;                         
       
       if (index % 2 == 0 )
         fileListDisplayRight.appendChild(fileDisplayEl);
@@ -44,15 +67,31 @@
         fileListDisplayLeft.appendChild(fileDisplayEl);
       
     });
+    
   };
   
   clearFiles = function () {    
     var request = new XMLHttpRequest();
-    request.open("POST", 'action/upload?action=clear');
+    request.open("POST", 'action/upload?action=clear&filename=tudo');
     request.send();
-    sleep(3000);
+    /*sleep(3000);
     fileList.forEach(function (file) {
       sendFile(file);
+    });*/
+  };
+
+  clearOneFiles = function (x) {
+    
+    var y = 0;
+
+    fileList.forEach(function (file) {
+
+      if ( y == x ) {
+        var request = new XMLHttpRequest();
+        request.open("POST", 'action/upload?action=clear&filename=idx'+x+'ed'+file.name+'&extfile=.'+file.type.substring(file.type.length,file.type.indexOf('/')+1));
+        request.send();
+      }
+      y++;
     });
   };
 
@@ -63,6 +102,46 @@
     formData.set('file', file);
     request.open("POST", 'action/upload');
     request.send(formData);
+  };
+
+  sendOneFile = function (x) {
+    
+    var y = 0;
+
+    $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 50);
+    //sleep(2000);
+
+    fileList.forEach(function (file) {
+
+      if ( y == x ) {
+
+        var formData = new FormData();
+        var request = new XMLHttpRequest();
+        formData.set('file', file);
+        request.open("POST", 'action/upload?filename=idx'+x+'ed'+file.name+'&extfile=.'+file.type.substring(file.type.length,file.type.indexOf('/')+1));
+        request.send(formData);
+
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 90);
+        sleep(200);
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 130);
+        sleep(200);
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 160);
+        sleep(1000);
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 200);
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('color', '#FFFFFF');
+        
+        fileListAux[x] = '<div class="progress" style="width:60%">'
+                    + ' <div id="prgBar' + XMLHttpRequest + '" class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:200%; color:#FFFFFF">' 
+                    + file.name.substring(0,6) + "..." + file.type + '&nbsp;' 
+                    + ' </div></div>'
+                    + '<a href="#" onclick="renderDelFileList(' + x + ')"  class="btn btn-icon-split"><span class="fas fa-trash" title="Excluir anexo!"></span></a>&nbsp; | &nbsp;'
+                    + '<a href="#" onclick="sendOneFile(' + x + ')"  class="btn btn-icon-split"><span class="fas fa-save" title="Salvar anexo!"></span></a>'
+                    + '<div class="dropdown-divider"></div>'
+                    ;
+      }
+      y++;
+    });
+    
   };
 })();
 
@@ -327,7 +406,7 @@ var app = angular.module("app", ["chart.js"]).controller("EditaManifestacao", fu
     }
     //$('#btnGravar').click();
     $('#prefinalizamanifestacaoModal').modal('show');
-    $("#btnGravar").trigger('click');    
+    //$("#btnGravar").trigger('click');    
   };
 
   $scope.finalizamanifestacao = function() {

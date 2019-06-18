@@ -6,7 +6,8 @@ var app = angular.module("app", ["chart.js"]).controller("DetailManifestacao", f
 
     $('#carregandoModal').modal('show');
     $scope.buscamanifestacao();
-    $("#sidebarToggle").click()
+    $("#sidebarToggle").click();
+    $('#carregandoModal').modal('hide');
 
   });
 
