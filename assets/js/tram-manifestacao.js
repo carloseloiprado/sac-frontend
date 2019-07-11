@@ -127,7 +127,7 @@
         sleep(200);
         $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 160);
         sleep(1000);
-        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 200);
+        $('#prgBar'+x).attr('aria-valuenow', 100).css('width', 1000);
         $('#prgBar'+x).attr('aria-valuenow', 100).css('color', '#FFFFFF');
         
         fileListAux[x] = '<div class="progress" style="width:60%">'
