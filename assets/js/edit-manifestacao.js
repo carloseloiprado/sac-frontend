@@ -440,7 +440,9 @@ var app = angular.module("app", ["chart.js"]).controller("EditaManifestacao", fu
           }).then(function mySucces(response) {
               
               $('#gravandoModal').modal('hide');
+              $("#prefinalizamanifestacaoModal").modal('hide');
               if (response.data.ttRetornoHeader[0].retornoSucesso == true) {
+                $('#gravandoModal').modal('hide');
                 $('#finalizamanifestacaoModal').modal('show');
                 $scope.mensagemmodal = 'Manifesta\xE7\xE3o editada com sucesso.';
                 $scope.nummanifestacaosistema = "Manifesta\xE7\xE3o "  + response.data.ttRetornoHeader[0].retornoMensagem;
